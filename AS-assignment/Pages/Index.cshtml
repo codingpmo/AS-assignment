@@ -1,0 +1,52 @@
+﻿@page
+@model AceJobAgency.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome, @Model.CurrentUser?.FirstName</h1>
+    <p>You are securely logged into Ace Job Agency.</p>
+</div>
+
+@if (Model.CurrentUser != null)
+{
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>User Profile (Sensitive Data Decrypted)</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Full Name:</div>
+                    <div class="col-sm-9">@Model.CurrentUser.FirstName @Model.CurrentUser.LastName</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Email:</div>
+                    <div class="col-sm-9">@Model.CurrentUser.Email</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">NRIC (Decrypted):</div>
+                    <div class="col-sm-9 text-danger">@Model.DecryptedNRIC</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Gender:</div>
+                    <div class="col-sm-9">@Model.CurrentUser.Gender</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Date of Birth:</div>
+                    <div class="col-sm-9">@Model.CurrentUser.DateOfBirth.ToShortDateString()</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Who Am I:</div>
+                    <div class="col-sm-9">@Model.CurrentUser.WhoAmI</div>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" asp-page-handler="Logout" class="mt-3">
+            <a href="/AccountSettings" class="btn btn-info me-2">Account Settings</a>
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+}

@@ -1,0 +1,87 @@
+﻿@page
+@model AceJobAgency.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-3">Ace Job Agency Registration</h2>
+
+            <form method="post" enctype="multipart/form-data">
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label class="form-label">First Name</label>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input asp-for="Input.LastName" class="form-control" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Gender</label>
+                    <select asp-for="Input.Gender" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">NRIC</label>
+                    <input asp-for="Input.NRIC" class="form-control" />
+                    <span asp-validation-for="Input.NRIC" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email Address</label>
+                    <input asp-for="Input.Email" class="form-control" type="email" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input asp-for="Input.Password" class="form-control" type="password" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input asp-for="Input.ConfirmPassword" class="form-control" type="password" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Date of Birth</label>
+                    <input asp-for="Input.DateOfBirth" class="form-control" type="date" />
+                    <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Resume (.docx or .pdf)</label>
+                    <input asp-for="Input.Resume" class="form-control" type="file" accept=".pdf,.docx" />
+                    <span asp-validation-for="Input.Resume" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Who Am I (Special characters allowed)</label>
+                    <textarea asp-for="Input.WhoAmI" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Input.WhoAmI" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

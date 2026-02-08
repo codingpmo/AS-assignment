@@ -1,0 +1,109 @@
+﻿@page
+@model AceJobAgency.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <h2 class="mb-4 text-center">Login</h2>
+
+            <form method="post" id="loginForm">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email Address</label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input asp-for="Input.Password" class="form-control" type="password" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" id="recaptchaToken" name="RecaptchaToken" value="" />
+
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <!-- Forgot Password Link -->
+            <div class="text-center mt-3">
+                <p class="mb-1">
+                    <a href="/ForgotPassword" class="text-decoration-none">Forgot Password?</a>
+                </p>
+                <small class="text-muted">Don't have an account? <a href="/Register">Register here</a></small>
+            </div>
+
+            <!-- 2FA Information Card -->
+            <div class="card mt-4 border-info">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">🔒 Enhance Your Security</h6>
+                </div>
+                <div class="card-body">
+                    <p class="small mb-2">
+                        <strong>Two-Factor Authentication (2FA)</strong> adds an extra layer of security to your account.
+                    </p>
+                    <ul class="small mb-0 ps-3">
+                        <li>Requires a 6-digit code from your authenticator app</li>
+                        <li>Protects your account even if your password is compromised</li>
+                        <li>Can be enabled in Account Settings after login</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Store site key BEFORE loading reCAPTCHA API
+    const RECAPTCHA_SITE_KEY = '@Model.SiteKey';
+    
+    console.log('Site Key:', RECAPTCHA_SITE_KEY);
+    
+    if (!RECAPTCHA_SITE_KEY) {
+        alert('reCAPTCHA configuration error: Site key not found');
+    }
+</script>
+
+<!-- Load reCAPTCHA API AFTER site key is available -->
+<script src="https://www.google.com/recaptcha/api.js?render=@Model.SiteKey" async defer></script>
+
+<script>
+    function handleLoginSubmit(e) {
+        e.preventDefault();
+        
+        const siteKey = '@Model.SiteKey';
+        const tokenField = document.getElementById('recaptchaToken');
+        
+        console.log('Form submit - SiteKey:', siteKey);
+        
+        if (!siteKey) {
+            alert('reCAPTCHA is not configured');
+            return false;
+        }
+        
+        if (typeof grecaptcha === 'undefined') {
+            alert('reCAPTCHA library failed to load');
+            return false;
+        }
+        
+        try {
+            grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
+                console.log('Token received:', token.substring(0, 50) + '...');
+                tokenField.value = token;
+                document.getElementById('loginForm').submit();
+            }).catch(function(err) {
+                console.error('reCAPTCHA execute error:', err);
+                alert('reCAPTCHA error: ' + err);
+            });
+        } catch (e) {
+            console.error('reCAPTCHA exception:', e);
+            alert('reCAPTCHA failed to execute: ' + e.message);
+        }
+    }
+    
+    document.getElementById('loginForm').addEventListener('submit', handleLoginSubmit);
+</script>

@@ -1,0 +1,121 @@
+@page
+@model AceJobAgency.Pages.AccountSettingsModel
+@{
+    ViewData["Title"] = "Account Settings";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4">Account Settings</h2>
+
+            @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @Model.SuccessMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (Model.MustChangePassword)
+            {
+                <div class="alert alert-warning">
+                    <strong>Action Required:</strong> Your password has expired. You must change it before continuing.
+                    <form method="post" asp-page-handler="ChangePassword" style="display: inline;">
+                        <button type="submit" class="btn btn-warning btn-sm">Change Password Now</button>
+                    </form>
+                </div>
+            }
+            else if (Model.DaysUntilPasswordExpiry <= 14)
+            {
+                <div class="alert alert-info">
+                    Your password will expire in @Model.DaysUntilPasswordExpiry days. Consider changing it soon.
+                </div>
+            }
+
+            <!-- Password Security Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Password Security</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Last password change: <strong>@Model.User.LastPasswordChangedDate.ToString("MMM dd, yyyy")</strong></p>
+                    <p class="text-muted">Days until password expires: <strong>@Model.DaysUntilPasswordExpiry days</strong></p>
+
+                    <form method="post" asp-page-handler="ChangePassword">
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </form>
+
+                    <hr />
+
+                    <h6>Password Policy</h6>
+                    <ul>
+                        <li>Minimum password age: @Model.User.MinimumPasswordAgeDays day(s)</li>
+                        <li>Maximum password age: @Model.User.MaximumPasswordAgeDays days</li>
+                        <li>Cannot reuse last 2 passwords</li>
+                        <li>Password complexity: Must include uppercase, lowercase, number, and special character</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Two-Factor Authentication Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Two-Factor Authentication (2FA)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            @if (Model.User.IsTwoFactorEnabled)
+                            {
+                                <div class="alert alert-success">
+                                    <i class="bi bi-check-circle"></i> 2FA is <strong>Enabled</strong>
+                                </div>
+                                <p class="text-muted">Setup date: <strong>@Model.User.TwoFactorSetupDate?.ToString("MMM dd, yyyy")</strong></p>
+                                <form method="post" asp-page-handler="Disable2FA" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to disable 2FA?');">Disable 2FA</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-circle"></i> 2FA is <strong>Disabled</strong>
+                                </div>
+                                <p class="text-muted">Protect your account with Two-Factor Authentication.</p>
+                                <form method="post" asp-page-handler="Setup2FA">
+                                    <button type="submit" class="btn btn-success">Enable 2FA</button>
+                                </form>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <h6>How it works:</h6>
+                            <ol style="font-size: 0.9rem;">
+                                <li>Enable 2FA on your account</li>
+                                <li>Scan the QR code with an authenticator app</li>
+                                <li>Save your backup codes in a secure location</li>
+                                <li>You'll be asked for a code each time you log in</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Information Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Account Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> @Model.User.Email</p>
+                    <p><strong>Name:</strong> @Model.User.FirstName @Model.User.LastName</p>
+                    <p><strong>Gender:</strong> @Model.User.Gender</p>
+                    <p><strong>Date of Birth:</strong> @Model.User.DateOfBirth.ToString("MMM dd, yyyy")</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a href="/Index" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
