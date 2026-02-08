@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>AceJobAgency</RootNamespace>
+    <UserSecretsId>aca4b561-faee-45be-9d06-c9f18357553d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -65,9 +65,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Resume (.docx or .pdf)</label>
-                    <input asp-for="Input.Resume" class="form-control" type="file" accept=".pdf,.docx" />
+                    <label class="form-label">Resume (.docx or .pdf, max 5MB)</label>
+                    <input asp-for="Input.Resume" class="form-control" type="file" accept=".pdf,.docx" id="resumeFile" />
                     <span asp-validation-for="Input.Resume" class="text-danger"></span>
+                    <small class="form-text text-muted">Maximum file size: 5MB</small>
                 </div>
 
                 <div class="mb-3">
@@ -76,7 +77,7 @@
                     <span asp-validation-for="Input.WhoAmI" class="text-danger"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Register</button>
             </form>
         </div>
     </div>
@@ -84,4 +85,32 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        document.getElementById('resumeFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+                if (file.size > maxSize) {
+                    alert('File size exceeds 5MB limit. Please upload a smaller file.');
+                    e.target.value = ''; // Clear the file input
+                    return false;
+                }
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('resumeFile');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    e.preventDefault();
+                    alert('File size exceeds 5MB limit. Please upload a smaller file.');
+                    return false;
+                }
+            }
+        });
+    </script>
 }

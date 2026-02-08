@@ -1,0 +1,16 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "AuthConnectionString": "Server=(localdb)\\mssqllocaldb;Database=AceJobAgencyDB;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "RecaptchaSettings": {
+    "SiteKey": "YOUR_RECAPTCHA_SITE_KEY_HERE",
+    "SecretKey": "YOUR_RECAPTCHA_SECRET_KEY_HERE"
+  }
+}

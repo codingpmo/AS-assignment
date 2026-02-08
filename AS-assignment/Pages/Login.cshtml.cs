@@ -48,6 +48,13 @@ namespace AceJobAgency.Pages
         public void OnGet()
         {
             SiteKey = _configuration["RecaptchaSettings:SiteKey"];
+            
+            // Log for debugging
+            if (string.IsNullOrEmpty(SiteKey))
+            {
+                Console.WriteLine("WARNING: SiteKey is null or empty in OnGet");
+            }
+            
             RecaptchaToken = null;
         }
 

@@ -6,6 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Configure multipart body length limit (10MB for forms with file uploads)
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10MB
+});
+
 builder.Services.AddSingleton<EncryptionService>();
 builder.Services.AddScoped<PasswordSecurityService>();
 builder.Services.AddScoped<TwoFactorService>();

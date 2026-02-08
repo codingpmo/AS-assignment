@@ -96,6 +96,14 @@ namespace AceJobAgency.Pages
                 return Page();
             }
 
+            // 2a. File Size Validation (5MB limit)
+            const long maxFileSize = 5 * 1024 * 1024; // 5MB
+            if (Input.Resume.Length > maxFileSize)
+            {
+                ModelState.AddModelError("Input.Resume", "File size cannot exceed 5MB.");
+                return Page();
+            }
+
             // Save the file
             var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
             if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
